@@ -8,15 +8,15 @@ After performing operations (Finding min,max temperatures) it will print report
 """
 
 
-import csv     # CSV(comma seperated values) used to read data from txt files.
+import csv     #CSV(comma seperated values) used to read data from txt files.
 import glob    # Finds all the pathnames matching a specified pattern
 
 
-Max_Humidity_dict = {} # Year is key and Minimum Humidity is value e.g 1998 : 20
-Min_Humidity_dict = {} # Year is key and Maximm Humidity is value e.g 1998 : 50
-Max_Temp_dict = {} # Year is key and Maximum Temp is value e.g 1998 : 47
-Min_Temp_dict = {} # Year is key and Minimum Temp is value e.g 1998 : 2
-Full_Date_dict = {} # Year is key and Full Date is value e.g 1998 : 1998-12-10
+max_humidity_dict = {} # Year is key and Minimum Humidity is value e.g 1998 : 20
+min_humidity_dict = {} # Year is key and Maximm Humidity is value e.g 1998 : 50
+max_temp_dict = {} # Year is key and Maximum Temp is value e.g 1998 : 47
+min_temp_dict = {} # Year is key and Minimum Temp is value e.g 1998 : 2
+full_date_dict = {} # Year is key and Full Date is value e.g 1998 : 1998-12-10
 
 
 
@@ -24,14 +24,14 @@ Full_Date_dict = {} # Year is key and Full Date is value e.g 1998 : 1998-12-10
 
 
 
-def Main():
+def main():
 
     """
     Entry point of the program (Main Function) which will call other functions
     we will pass path of directory where all weather files are located.
     """
 
-    Read_contents_of_File = []            #List to store data of txt file
+    read_contents_of_file = []            #List to store data of txt file
     List = []                            #List to store each row
     dir_path = "E:\Shahwaiz Data\Semester 6\Python\Task-1\weatherdata.txt"
     files = glob.glob(dir_path)
@@ -40,22 +40,22 @@ def Main():
             File.__next__()
             File.__next__()
             Read_contents_of_File = csv.reader(File)
-            for row in Read_contents_of_File:
+            for row in read_contents_of_file:
                 if row != 0:
                     List.append(row)
             List = List[:-1]
 
 
 
-    Maximum_Temperature = Max_Temp_Calculation(List)
-    Minimum_Temperature = Min_Temp_Calculation(List)
-    Maximum_Humidity = Max_Humidity_Calculation(List)
-    Minimum_Humidity = Min_Humidity_Calculation(List)
+    maximum_temperature = max_temp_calculation(List)
+    minimum_temperature = min_temp_calculation(List)
+    maximum_humidity = max_humidity_calculation(List)
+    minimum_humidity = min_humidity_calculation(List)
 
-    Date_of_Max_Temperature = getDateMaxTemp(Maximum_Temperature)
-    Date_of_Min_Temperature = getDateMinTemp(Minimum_Temperature)
-    Date_of_Max_Humidity = getDateMaxHumidity(Maximum_Humidity)
-    Date_of_Min_Humidity = getDateMinHumidity(Minimum_Humidity)
+    date_of_max_temperature = get_date_of_maxTemp(maximum_temperature)
+    date_of_min_temperature = get_date_of_minTemp(minimum_temperature)
+    date_of_max_humidity = get_date_of_maxHumidity(maximum_humidity)
+    date_of_min_humidity = get_date_of_minHumidity(minimum_humidity)
 
 
 
@@ -63,22 +63,22 @@ def Main():
 #Functions which will be called form Main Function
 
 
-def getDateMaxTemp(Max_Temp):
-    if Max_Temp != 0:
-        Date = Max_Temp[0]
-        Year = str(Date)[:4]
-        Max_Temp_of_Month = Max_Temp[1]
-        if Year in Max_Temp_dict.keys():
-            temp = int(Max_Temp_of_Month)
-            Temp_in_Dic = int(Max_Temp_dict[Year])
-            if temp > Temp_in_Dic:
-                Max_Temp_dict[Year] = Max_Temp_of_Month
-                Full_Date_dict[Year] = Date
+def get_date_of_maxTemp(max_temp):
+    if max_temp != 0:
+        date = max_temp[0]
+        year = str(date)[:4]
+        max_temp_of_month = max_temp[1]
+        if year in max_temp_dict.keys():
+            temp = int(max_temp_of_month)
+            temp_in_dic = int(max_temp_dict[year])
+            if temp > temp_in_dic:
+                max_temp_dict[year] = max_temp_of_month
+                full_fate_dict[year] = date
             else:
                 pass
         else:
-            Max_Temp_dict[Year] = Max_Temp_of_Month
-            Full_Date_dict[Year] = Date
+            max_temp_dict[year] = max_temp_of_month
+            full_date_dict[year] = date
     else:
         pass
 
@@ -86,57 +86,57 @@ def getDateMaxTemp(Max_Temp):
 
 
 
-def getDateMinTemp(Min_Temp):
-    if Min_Temp != 0:
-        Date = Min_Temp[0]
-        Year = str(Date)[:4]
-        Min_Temp_of_Month = Min_Temp[1]
-        if Year in Min_Temp_dict.keys():
-            temp = int(Min_Temp_of_Month)
-            Temp_in_Dic = int(Min_Temp_dict[Year])
-            if temp < Temp_in_Dic:
-                Min_Temp_dict[Year] = Min_Temp_of_Month
+def get_date_of_minTemp(min_temp):
+    if min_temp != 0:
+        date = min_temp[0]
+        year = str(date)[:4]
+        min_temp_of_month = min_temp[1]
+        if year in min_temp_dict.keys():
+            temp = int(min_temp_of_month)
+            temp_in_dic = int(min_temp_dict[year])
+            if temp < temp_in_dic:
+                min_temp_dict[year] = min_temp_of_month
             else:
                 pass
         else:
-            Min_Temp_dict[Year] = Min_Temp_of_Month
+            min_temp_dict[year] = min_temp_of_month
 
     else:
         pass
 
 
-def getDateMaxHumidity(Max_humi):
-    if Max_humi != 0:
-        Date = Max_humi[0]
-        Year = str(Date)[:4]
-        Maximum_Humidity_of_Month = Max_humi[1]
-        if Year in Max_Humidity_dict.keys():
-            humidity = int(Maximum_Humidity_of_Month)
-            existing_humidity = int(Max_Humidity_dict[Year])
+def get_date_of_maxHumidity(max_humidity):
+    if max_humidity != 0:
+        date = max_humidity[0]
+        year = str(date)[:4]
+        maximum_humidity_of_month = max_humidity[1]
+        if year in max_humidity_dict.keys():
+            humidity = int(maximum_humidity_of_month)
+            existing_humidity = int(max_humidity_dict[year])
             if humidity > existing_humidity:
-                Max_Humidity_dict[Year] =  Maximum_Humidity_of_Month
+                max_humidity_dict[year] =  maximum_humidity_of_month
             else:
                 pass
         else:
-            Max_Humidity_dict[Year] = Maximum_Humidity_of_Month
+            max_humidity_dict[year] = maximum_humidity_of_month
     else:
         pass
 
 
-def getDateMinHumidity(Min_humi):
-    if Min_humi != 0:
-        Date = Min_humi[0]
-        Year = str(Date)[:4]
-        Minimum_Humidity_of_Month = Min_humi[1]
-        if Year in Min_Humidity_dict.keys():
-            humidity = int(Minimum_Humidity_of_Month)
-            existing_humidity = int(Min_Humidity_dict[Year])
+def get_date_of_minHumidity(min_humidity):
+    if min_humidity != 0:
+        date = min_humidity[0]
+        year = str(date)[:4]
+        minimum_humidity_of_month = min_humidity[1]
+        if year in min_humidity_dict.keys():
+            humidity = int(minimum_humidity_of_month)
+            existing_humidity = int(min_humidity_dict[year])
             if humidity < existing_humidity:
-                Min_Humidity_dict[Year] =  Minimum_Humidity_of_Month
+                min_humidity_dict[year] =  minimum_humidity_of_month
             else:
                 pass
         else:
-            Min_Humidity_dict[Year] = Minimum_Humidity_of_Month
+            min_humidity_dict[year] = minimum_humidity_of_month
     else:
         pass
 
@@ -145,121 +145,131 @@ def getDateMinHumidity(Min_humi):
 
 
 
-def Max_Temp_Calculation(List_of_Temp):
-    Max_temperatures_list = []
-    i = List_of_Temp[1]
-    for i in range(len(List_of_Temp)):
-        Max_temperatures_list = Max_temperatures_list.append(List_of_Temp[i])
+def max_temp_calculation(list_of_temp):
+    max_temperatures_list = []
+    i = list_of_temp[1]
+    for i in range(len(list_of_temp)):
+        max_temperatures_list = max_temperatures_list.append(list_of_temp[i])
         i = i+23
-    if not Max_temperatures_list:
+    if not max_temperatures_list:
         return 0
     else:
-        Max_temp = max(Max_temperatures_list)
-        Max_temp_String = str(Max_temp)
-    for item in range(len(List_of_Temp)):
-        if List_of_Temp[item][1] == Max_temp_String:
-            Max_temperatures_list.append(List_of_Temp[item][0])
-            Max_temperatures_list.append(Max_temp_String)
+        max_temp = max(max_temperatures_list)
+        max_temp_string = str(max_temp)
+    for item in range(len(list_of_temp)):
+        if list_of_temp[item][1] == max_temp_string:
+            max_temperatures_list.append(list_of_temp[item][0])
+            max_temperatures_list.append(max_temp_string)
             break
 
 
-    return Max_temperatures_list
+    return max_temperatures_list
 
 
 
-def Min_Temp_Calculation(List_of_Temp):
-    Min_temperatures_list = []
-    i = List_of_Temp[3]
-    for i in range(len(List_of_Temp)):
-        Min_temperatures_list = Min_temperatures_list.append(List_of_Temp[i])
+def mix_temp_calculation(list_of_temp):
+    min_temperatures_list = []
+    i = list_of_temp[3]
+    for i in range(len(list_of_temp)):
+        min_temperatures_list = min_temperatures_list.append(list_of_temp[i])
         i = i+23
-    if not Min_temperatures_list:
+    if not min_temperatures_list:
         return 0
     else:
-        Min_temp = max(Min_temperatures_list)
-        Min_temp_String = str(Min_temp)
-    for item in range(len(List_of_Temp)):
-        if List_of_Temp[item][3] == Min_temp_String:
-            Min_temperatures_list.append(List_of_Temp[item][0])
-            Min_temperatures_list.append(Min_temp_String)
+        min_temp = min(min_temperatures_list)
+        min_temp_string = str(min_temp)
+    for item in range(len(list_of_temp)):
+        if list_of_temp[item][3] == min_temp_string:
+            min_temperatures_list.append(list_of_temp[item][0])
+            min_temperatures_list.append(min_temp_string)
             break
 
 
-    return Min_temperatures_list
+    return min_temperatures_list
 
 
-
-
-def Max_Humidity_Calculation(List_of_Humidity):
+def max_humidity_calculation(list_of_humidity):
     i = 7
     month_max_humidity = []
     max_list_of_humidity = []
-    for i in range(len(List_of_Humidity)):
-        max_list_of_humidity.append(List_of_Humidity[i][7])
+    for i in range(len(list_of_humidity)):
+        max_list_of_humidity.append(list_of_humidity[i][7])
         i = i+23
     if not max_list_of_humidity:
         return 0
 
     else:
-        maximum_humidity = max(List_of_Humidity)
-        Max_humidity_String = str(maximum_humidity)
-        for item in range(len(List_of_Humidity)):
-            if List_of_Humidity[item][7] == Max_humidity_String:
-                month_max_humidity.append(List_of_Humidity[item][0])
-                month_max_humidity.append(Max_humidity_String)
+        maximum_humidity = max(list_of_humidity)
+        max_humidity_string = str(maximum_humidity)
+        for item in range(len(list_of_humidity)):
+            if list_of_humidity[item][7] == max_humidity_string:
+                month_max_humidity.append(list_of_humidity[item][0])
+                month_max_humidity.append(max_humidity_string)
                 break
         return month_max_humidity
 
 
-def Min_Humidity_Calculation(List_of_Humidity):
+def min_humidity_calculation(list_of_humidity):
     i = 9
     month_min_humidity = []
     min_list_of_humidity = []
-    for i in range(len(List_of_Humidity)):
-        min_list_of_humidity.append(List_of_Humidity[i][9])
+    for i in range(len(list_of_humidity)):
+        min_list_of_humidity.append(list_of_humidity[i][9])
         i = i+23
     if not min_list_of_humidity:
         return 0
 
     else:
-        minimum_humidity = max(List_of_Humidity)
-        Min_humidity_String = str(minimum_humidity)
-        for item in range(len(List_of_Humidity)):
-            if List_of_Humidity[item][9] == Min_humidity_String:
-                month_min_humidity.append(List_of_Humidity[item][0])
-                month_min_humidity.append(Min_humidity_String)
+        minimum_humidity = min(list_of_humidity)
+        min_humidity_string = str(minimum_humidity)
+        for item in range(len(list_of_humidity)):
+            if list_of_humidity[item][9] == min_humidity_string:
+                month_min_humidity.append(list_of_humidity[item][0])
+                month_min_humidity.append(min_humidity_string)
                 break
         return month_min_humidity
 
 
 
-def year_hottest_days():
-    print()
-    print(" ********************************************************************************************************** ")
-    print("          Year                              Date                          Temp                              ")
-    print(" ********************************************************************************************************** ")
-    print()
-    for i in Max_Temp_dict.keys():
-        print("{0}    {1}    {2}".format(i, Full_Date_dict[i], Max_Temp_dict[i]))
+def year_hottest_days(): 
+     """ 
+     it will show the the Hottest days with year and complete date 
+ 
+    """ 
+    print(str("Year").rjust(4), 
+           str("Date").rjust(10), 
+           str("Temp").rjust(11), 
+           "[Report#2][Hottest Days Report]".rjust(8) 
+           ) 
+     # iterate over dictionary key @Year e.g 1996 and display it's value.Uses same key for two dictionaries 
+     # e.g 1996:1996-12-1 and 1996:49 
+    for i in full_date_dict.keys(): 
+         print(str(i).rjust(4), 
+               str(full_date_dict[i]).rjust(12), 
+               str(max_temp_dict[i]).rjust(8) 
+              ) 
 
 
-def Annual_Report():
-    print()
-    print(" ********************************************************************************************************** ")
-    print("          Year    Max Temp    Min Temp    Max Humidity    Min Humidity                                "      )
-    print(" ********************************************************************************************************** ")
-    for i in Max_Temp_dict.keys():
-        print("{0}        {1}       {2}            {3}           {4}".format(i, Max_Temp_dict[i], Min_Temp_dict[i],
-                                                                             Max_Humidity_dict[i],
-                                                                             Min_Humidity_dict[i]))
-
-
-
-print()
-print(" ********************************************************************************************************** ")
-print("                                                   MENU                                                     ")
-print(" ********************************************************************************************************** ")
-print()
+def annual_report(): 
+    """ 
+    It will show the annual report to the user   
+    """ 
+    print(str("Year").rjust(7), 
+          str("MAXTemp").rjust(7), 
+          str("MINTemp").rjust(7), 
+          str("MAXHumidity").rjust(7), 
+          str("MINHumidity").rjust(7), 
+          "[Report#1][Annual Report]".rjust(8) 
+          ) 
+     
+     # iterate over dictionary key @Year e.g 1996 and display it's value.Uses same key for all dictionaries 
+    for i in full_date_dict.keys(): 
+        print(str(i).rjust(6), 
+              str(max_temp_dict[i]).rjust(6), 
+              str(min_temp_dict[i]).rjust(6), 
+              str(max_humidity_dict[i]).rjust(8), 
+              str(min_humidity_dict[i]).rjust(9) 
+               ) 
 
 
 
@@ -268,11 +278,11 @@ userChoice = str(input("1. For Annual Report\n"
                        "Please Enter Your Choice: "))
 
 if int(userChoice) == 1:
-    Main()
-    Annual_Report()
+    main()
+    annual_report()
 
 elif int(userChoice) == 2:
-    Main()
+    main()
     year_hottest_days()
 
 else:
