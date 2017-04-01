@@ -2,7 +2,7 @@
 """
 The Purpose of this project is basically to generate report on the weather data of Lahore from 1996 to 2011.
 The data is present in bunch of text files.
-it will read those text files and perform operations.
+it will read those text files and perform operations
 After performing operations (Finding min,max temperatures) it will print report
 
 """
