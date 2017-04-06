@@ -23,24 +23,35 @@ def main():
     """
     files = glob.glob("*.txt")
     for afile in files:
-        read_contents_of_file = [] 
-        save_contents_of_file = []
+        max_temp_reader_list = []
+        date_of_max_temp = []
+        min_temp_reader_list = []
+        max_humidity_reader_list = []
+        min_humidity_reader_list = []
         
         with open(afile) as file:
-            # skip first two lines
-            file.__next__()
-            file.__next__()
-            read_contents_of_file = csv.reader(file)
+            # skip first and last lines
+            read_contents_of_file = csv.DictReader(file.readlines()[1:-1])
             for row in read_contents_of_file:
                 # iterate over a file lines
-                if row != 0:
-                    save_contents_of_file.append(row)
-            save_contents_of_file = save_contents_of_file[:-1] # skip last line
+                if row:
+                    # if row is not empty
+                    if row['Max TemperatureC']:
+                        max_temp_reader_list.append(row['Max TemperatureC'])
+                        min_temp_reader_list.append(row['Min TemperatureC'])
+                        max_humidity_reader_list.append(row['Max Humidity'])
+                        min_humidity_reader_list.append(row['Min Humidity'])
+                        # if date format is PKT or PKST 
+                         if 'PKT' in row.keys(): 
+                            date_of_max_temp.append(row['PKT']) 
+                        else: 
+                             date_of_max_temp.append(row['PKST']) 
+        
         # Passing list to functions for calculations
-        maximum_temperature = max_temp_calculation(save_contents_of_file)
-        minimum_temperature = min_temp_calculation(save_contents_of_file)
-        maximum_humidity = max_humidity_calculation(save_contents_of_file)
-        minimum_humidity = min_humidity_calculation(save_contents_of_file)
+        maximum_temperature = max_temp_calculation(max_temp_reader_list)
+        minimum_temperature = min_temp_calculation(min_temp_reader_list)
+        maximum_humidity = max_temp_calculation(max_humidity_reader_list)
+        minimum_humidity = min_temp_calculation(min_humidity_reader_list)
         # Getting dates of temperatures(Max, Min)  
         date_of_max_temperature = get_date_of_maxTemp(maximum_temperature)
         date_of_min_temperature = get_date_of_minTemp(minimum_temperature)
@@ -56,6 +67,7 @@ def get_date_of_maxTemp(max_temp):
     """
     if max_temp != 0:
         date = max_temp[0]
+
         # Split the date so that we can use Year e.g 1996 as a key
         year = str(date)[:4]
         max_temp_of_month = max_temp[1]
@@ -173,109 +185,28 @@ def get_date_of_minHumidity(min_humidity):
 
 
 def max_temp_calculation(list_of_temp):
-    """
-    This function will calculate
-    Maximum temperature
-    
-    """
-    max_temperatures_list = []
-    i = list_of_temp[1]
-    for i in range(len(list_of_temp)):
-        max_temperatures_list = max_temperatures_list.append(list_of_temp[i])
-        i = i+23
-        # If not exists
-    if not max_temperatures_list:
-        return 0
-    else:
-        max_temp = max(max_temperatures_list)
-        max_temp_string = str(max_temp)
-        
-    for item in range(len(list_of_temp)):
-        
-        if list_of_temp[item][1] == max_temp_string:
-            max_temperatures_list.append(list_of_temp[item][0])
-            max_temperatures_list.append(max_temp_string)
-            break
-    
-    return max_temperatures_list
+    """ 
+    This function will calculate maximum value
+    :param list_of_temp: List from where to find Max number 
+    :return: maximum number in string
+    """  
+    if len(list_of_temp) == 0: 
+        return 0 
+    if len(temp_list) == 1: 
+         return list_of_temp 
+    maximum = max(map(int,list_of_temp)) 
+     return str(maximum) 
+         
 
-
-def mix_temp_calculation(list_of_temp):
-    """
-    This function will calculate
-    Minimum temperature
-    
-    """
-    min_temperatures_list = []
-    i = list_of_temp[3]
-    for i in range(len(list_of_temp)):
-        min_temperatures_list = min_temperatures_list.append(list_of_temp[i])
-        i = i+23
-        # If not exists
-    if not min_temperatures_list:
-        return 0
-    else:
-        min_temp = min(min_temperatures_list)
-        min_temp_string = str(min_temp)
-        
-    for item in range(len(list_of_temp)):
-        
-        if list_of_temp[item][3] == min_temp_string:
-            min_temperatures_list.append(list_of_temp[item][0])
-            min_temperatures_list.append(min_temp_string)
-            break
-            
-    return min_temperatures_list
-
-
-def max_humidity_calculation(list_of_humidity):
-    """
-    This function will calculate
-    Maximum humidity
-    
-    """
-    i = 7
-    month_max_humidity = []
-    max_list_of_humidity = []
-    for i in range(len(list_of_humidity)):
-        max_list_of_humidity.append(list_of_humidity[i][7])
-        i = i+23
-    if not max_list_of_humidity:
-        return 0
-    else:
-        maximum_humidity = max(list_of_humidity)
-        max_humidity_string = str(maximum_humidity)
-        for item in range(len(list_of_humidity)):
-            if list_of_humidity[item][7] == max_humidity_string:
-                month_max_humidity.append(list_of_humidity[item][0])
-                month_max_humidity.append(max_humidity_string)
-                break
-        return month_max_humidity
-
-
-def min_humidity_calculation(list_of_humidity):
-    """
-    This function will calculate
-    Minimum humidity
-    
-    """
-    i = 9
-    month_min_humidity = []
-    min_list_of_humidity = []
-    for i in range(len(list_of_humidity)):
-        min_list_of_humidity.append(list_of_humidity[i][9])
-        i = i+23
-    if not min_list_of_humidity:
-        return 0
-    else:
-        minimum_humidity = min(list_of_humidity)
-        min_humidity_string = str(minimum_humidity)
-        for item in range(len(list_of_humidity)):
-            if list_of_humidity[item][9] == min_humidity_string:
-                month_min_humidity.append(list_of_humidity[item][0])
-                month_min_humidity.append(min_humidity_string)
-                break
-        return month_min_humidity
+def min_temp_calculation(list_of_temp):
+    """ 
+    :param list_of_temp: list to apply minimum function 
+    :return: string minimum number 
+    """ 
+    if len(list_of_temp) == 1: 
+        return list_of_temp 
+    minimum = min(map(int,list_of_temp)) 
+     return str(minimum) 
 
 
 def year_hottest_days(): 
